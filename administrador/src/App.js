@@ -1,12 +1,16 @@
 import React from 'react'
-import ListaProductosView from "./views/ListaProductosView"
-import CrearProductoView from "./views/CrearProductoView"
+import Routes from "./Routes"
+import {BrowserRouter as Router, Switch} from "react-router-dom"
 
 export default function App() {
   return (
+    <Router>
     <div className="container p-3">
-      <ListaProductosView/>
-      <CrearProductoView/>
+      <Switch>
+        <Routes/>
+      </Switch>  
     </div>
+    </Router>
+    
   )
 }

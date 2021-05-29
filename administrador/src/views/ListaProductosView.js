@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { obtenerProductos } from "../services/productoServices";
+import {Link} from "react-router-dom"
 
 export default function ListaProductosView() {
   const [productos, setProductos] = useState([]);
@@ -20,6 +21,8 @@ export default function ListaProductosView() {
 
   return (
     <div>
+      <h1>Productos Listados</h1>
+      <Link className="btn btn-primary btn-lg my-2" to="/crearproducto">Crear Producto</Link>
       <table className="table">
         <thead>
           <tr>
@@ -37,6 +40,9 @@ export default function ListaProductosView() {
               <td>{producto.precio}</td>
               <td>{producto.descripcion}</td>
               <td>{producto.stock}</td>
+              <td>
+                <Link className="btn btn-warning btn-sm" to ={`/editarproductos/${producto.id}`}>Editar</Link>
+              </td>
             </tr>
           ))}
         </tbody>
