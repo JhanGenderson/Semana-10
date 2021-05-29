@@ -41,7 +41,7 @@ export default function ListaProductosView() {
               <td>{producto.descripcion}</td>
               <td>{producto.stock}</td>
               <td>
-                <Link className="btn btn-warning btn-sm" to ={`/editarproductos/${producto.id}`}>Editar</Link>
+                <Link className="btn btn-warning btn-sm" to ={`/editarproducto/${producto.id}`}>Editar</Link>
               </td>
             </tr>
           ))}
