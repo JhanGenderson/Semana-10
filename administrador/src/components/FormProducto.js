@@ -1,39 +1,53 @@
 import React, { useState, useEffect, useRef } from "react";
 
-export default function FormProducto() {
-  const [colores, setColores] = useState([]);
-  const[fotos, setFotos] = useState([])
-
+export default function FormProducto({value, actualizarInput, setValue, manejarSubmit}) {
+ 
   const inputColor = useRef();
   const inputFotos = useRef();
 
   const anadirColor = (e) => {
     e.preventDefault();
     let nuevocolor = inputColor.current.value;
-    setColores([...colores, nuevocolor]);
+    setValue({...value, colores:[...value.colores, nuevocolor]});
   };
 
   const anadirFoto = (e) => {
       e.preventDefault()
       let nuevaFoto = inputFotos.current.value;
-      setFotos([...fotos, nuevaFoto])
+      setValue({...value, fotos:[...value.fotos, nuevaFoto]})
   }
+
   return (
     <div>
-      <form>
+      <form onSubmit={(e)=> {manejarSubmit(e)}}>
         <div>
           <label>Nombre</label>
-          <input type="text" className="form-control" />
+          <input type="text" className="form-control" name="nombre" 
+          value={value.nombre}
+          onChange={(e)=>{actualizarInput(e)}}/>
+        </div>
+
+        <div>
+          <label>Descripcion</label>
+          <input type="text" className="form-control" name="descripcion"
+          value={value.descripcion}
+          onChange={(e)=>{actualizarInput(e)}}/>
         </div>
 
         <div>
           <label>Precio</label>
-          <input type="number" className="form-control" />
+          <input type="number" className="form-control"
+          name="precio" 
+          value={value.precio}
+          onChange={(e)=>{actualizarInput(e)}}/>
         </div>
 
         <div>
           <label>Stock</label>
-          <input type="number" className="form-control" />
+          <input type="number" className="form-control" 
+          name="stock"
+          value={value.stock}
+          onChange={(e)=>{actualizarInput(e)}}/>
         </div>
 
         <div>
@@ -48,7 +62,7 @@ export default function FormProducto() {
             Agregar Color
           </button>
           <div className="list-group">
-            {colores.map((color, i) => (
+            {value.colores.map((color, i) => (
               <div className="list-group-item list-group-item-sm" key={i}>
                 Color:{" "}
                 <span
@@ -71,10 +85,13 @@ export default function FormProducto() {
           className="form-control"/>
           <button className="btn btn-primary btn-sm" onClick={(e)=>{anadirFoto(e)}}> Agregar Foto</button>
           <ul className="list-group">
-                  {fotos.map((fotito, i)=>(
+                  {value.fotos.map((fotito, i)=>(
                       <li className="list-group-item" key={i}>{fotito}</li>
                   ))}
           </ul>
+      </div>
+      <div className="d-grid">
+        <button type="submit" className="btn btn-primary "> Guardar</button>
       </div>
       </form>
     </div>
