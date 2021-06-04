@@ -1,4 +1,14 @@
 import React, { useRef } from "react";
+import { subirArchivo } from "../services/productoServices";
+
+// Esta variable me va a permitir, manejar mi archivo sin problemas.
+let imagenes;
+
+const asyncForEach = async (array, callback) => {
+  for (let i = 0; i < array.length; i++) {
+    await callback(array[i]);
+  }
+};
 
 export default function FormProducto({
   value,
@@ -7,7 +17,7 @@ export default function FormProducto({
   manejarSubmit,
   categorias,
 }) {
-  console.log({categorias})
+  console.log({ categorias });
 
   const inputColor = useRef();
   const inputFotos = useRef();
@@ -18,17 +28,28 @@ export default function FormProducto({
     setValue({ ...value, colores: [...value.colores, nuevocolor] });
   };
 
-  const anadirFoto = (e) => {
+  const ejecutarSubmit = async (e) => {
     e.preventDefault();
-    let nuevaFoto = inputFotos.current.value;
-    setValue({ ...value, fotos: [...value.fotos, nuevaFoto] });
+    let urls = [];
+
+    await asyncForEach(imagenes, async (imagen) => {
+      let urlImagenSubida = await subirArchivo(imagen);
+      urls.push(urlImagenSubida);
+    });
+    manejarSubmit(e);
+  };
+
+  const manejarImagen = (e) => {
+    e.preventDefault();
+    let misImagenes = e.target.files;
+    imagenes = misImagenes;
   };
 
   return (
     <div>
       <form
         onSubmit={(e) => {
-          manejarSubmit(e);
+          ejecutarSubmit(e);
         }}
       >
         <div className="mb-3">
@@ -113,15 +134,23 @@ export default function FormProducto({
         </div>
         <div className="mb-3">
           <label className="form-label">Fotos</label>
-          <input type="text" ref={inputFotos} className="form-control" />
-          <button
+          <input
+            type="file"
+            ref={inputFotos}
+            className="form-control"
+            onChange={(e) => {
+              manejarImagen(e);
+            }}
+            multiple
+          />
+          {/* <button
             className="btn btn-primary btn-sm"
             onClick={(e) => {
               anadirFoto(e);
             }}
           >
             Agregar Foto
-          </button>
+          </button> */}
           <ul className="list-group">
             {value.fotos.map((fotito, i) => (
               <li className="list-group-item" key={i}>
@@ -142,14 +171,18 @@ export default function FormProducto({
             ))} 
           </datalist> */}
 
-          <select 
-           className="form-control"
-           name="id_categoria"
-           value={value.id_categoria}
-           onChange={(e)=>{actualizarInput(e)}}
-           >
-              {categorias.map((cat, i) => (
-              <option key={i} value={cat.id}>{cat.nombre}</option>
+          <select
+            className="form-control"
+            name="id_categoria"
+            value={value.id_categoria}
+            onChange={(e) => {
+              actualizarInput(e);
+            }}
+          >
+            {categorias.map((cat, i) => (
+              <option key={i} value={cat.id}>
+                {cat.nombre}
+              </option>
             ))}
           </select>
         </div>
