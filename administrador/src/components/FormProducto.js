@@ -36,7 +36,7 @@ export default function FormProducto({
       let urlImagenSubida = await subirArchivo(imagen);
       urls.push(urlImagenSubida);
     });
-    manejarSubmit(e);
+    manejarSubmit(e, urls);
   };
 
   const manejarImagen = (e) => {

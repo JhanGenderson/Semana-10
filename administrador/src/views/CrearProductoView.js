@@ -38,10 +38,10 @@ export default function CrearProductoView() {
 
 
 
-  const manejarSubmit = async (e) => {
+  const manejarSubmit = async (e, urlsFotos) => {
     e.preventDefault();
     try {
-      await crearProducto({ ...value });
+      await crearProducto({...value,fotos:[...urlsFotos] });
       Swal.fire({
         icon: "success",
         title: "Producto Creado Exitosamente",

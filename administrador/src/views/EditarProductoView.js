@@ -27,9 +27,9 @@ export default function EditarProductoView() {
         })
     }
 
-    const manejarSubmit = async (e) => {
+    const manejarSubmit = async (e, urlsFotos) => {
         e.preventDefault()
-        await editarProducto(value, id)
+        await editarProducto({...value, fotos:[...value.fotos, ...urlsFotos]}, id)
     }
 
     const getProducto = async() =>{
